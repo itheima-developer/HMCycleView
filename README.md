@@ -1,13 +1,10 @@
 # HMCycleView
-
 HMCycleView is a open source iOS library provide infinity scroll show a group of views in view.
 
 ##Demo
-===
 Build and run the `HMCycleViewDemo` project in Xcode to see `HMCycleView` in action.
 
 ##Setup
-===
 To enable fantasitic feature in your project with the following simple steps:
 
 1. Download the project from GitHub.
@@ -15,7 +12,6 @@ To enable fantasitic feature in your project with the following simple steps:
 3. Add `#include "HMCycleView.h"` to the top of classes that will use it.
 
 ##Usage
-===
 ``` objective-c
 
     // 1. create cycleView
@@ -37,7 +33,6 @@ To enable fantasitic feature in your project with the following simple steps:
 ```
 
 ##Author
-===
 **Yoson Hao**
 
 Weibo:[@郝悦兴][1]
@@ -45,7 +40,6 @@ Weibo:[@郝悦兴][1]
 Github:[Hao Y.Xing][2]
 
 ##Thanks
-===
 **刀哥**
 
 Github:[刘凡][3]
