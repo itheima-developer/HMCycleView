@@ -28,9 +28,16 @@ To enable fantasitic feature in your project with the following simple steps:
     cycleView.duration = 3;
 
     // 4. Call the showInView method to display
-    // 4. 调用showInView的方法现实在某个view上
+    // 4. 调用showInView的方法显示在某个view上
     [cycleView showInView:self.view];
 ```
+
+##TODO
+Each item click.
+
+Each item description.
+
+Page control.
 
 ##Author
 **Yoson Hao**
@@ -45,6 +52,9 @@ Github:[Hao Y.Xing][2]
 Github:[刘凡][3]
 
 Blog:[Joy iOS][4]
+
+##License
+HMCycleView is released under the MIT license. See LICENSE for details.
 
 [1]: http://weibo.com/haoyuexing
 [2]: https://github.com/haoyuexing
