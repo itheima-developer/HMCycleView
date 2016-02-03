@@ -1,12 +1,12 @@
 //
-//  YHCycleView.m
-//  YHCycleView
+//  HMCycleView.m
+//  HMCycleView
 //
 //  Created by HaoYoson on 16/1/29.
 //  Copyright © 2016年 YosonHao. All rights reserved.
 //
 
-#import "YHCycleView.h"
+#import "HMCycleView.h"
 
 @interface NSTimer (Addition)
 
@@ -56,27 +56,17 @@
 
 @end
 
-@interface YHCycleView () <UICollectionViewDelegate, UICollectionViewDataSource>
+@interface HMCycleView () <UICollectionViewDelegate, UICollectionViewDataSource>
 
-/**
- *  记录应该当前应该显示的itemViews数组中应该显示的下标
- */
 @property (assign, nonatomic) NSInteger currentViewIndex;
 
-/**
- *  记录上一次的offsetX
- *  用来判断是否翻页成功
- */
 @property (assign, nonatomic) CGFloat currentOffsetX;
 
-/**
- *  定时器 =.=
- */
 @property (strong, nonatomic) NSTimer *animationTimer;
 
 @end
 
-@implementation YHCycleView
+@implementation HMCycleView
 
 // 重用标识符
 static NSString *const reuseIdentifier = @"cycleViewCell";
@@ -112,9 +102,10 @@ static NSString *const reuseIdentifier = @"cycleViewCell";
  */
 - (void)showInView:(UIView *)view
 {
+
     // 初始化当前view的index为0
     self.currentViewIndex = 0;
-    
+
     // 设置collectionView的offset为
     if (self.itemViews.count > 1) {
         self.contentOffset = CGPointMake(self.itemViews.count * self.frame.size.width, 0);
@@ -127,22 +118,17 @@ static NSString *const reuseIdentifier = @"cycleViewCell";
     self.delegate = self;
     self.dataSource = self;
 
-    // 允许分页
     self.pagingEnabled = YES;
 
-    // 不允许弹簧效果
     self.bounces = NO;
 
-    // 不显示进度条
     self.showsHorizontalScrollIndicator = NO;
     self.showsVerticalScrollIndicator = NO;
 
-    // 把所有需要现实的子空间的frame设置和当前view一样大小
+    // 把所有需要现实的子控件的frame设置和当前view一样大小
     for (UIView *itemView in self.itemViews) {
         itemView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     }
-
-    // 把控件添加到需要显示的view上
     [view addSubview:self];
 
     // 开启定时器 默认两秒向右滚动 - 单张图片不开启时钟
@@ -151,21 +137,24 @@ static NSString *const reuseIdentifier = @"cycleViewCell";
     }
 }
 
-- (void)willMoveToWindow:(UIWindow *)newWindow {
+- (void)willMoveToWindow:(UIWindow *)newWindow
+{
     [super willMoveToWindow:newWindow];
-    
+
     self.contentInset = UIEdgeInsetsZero;
 }
 
-- (void)removeFromSuperview {
+- (void)removeFromSuperview
+{
     [super removeFromSuperview];
-    
+
     [self.animationTimer invalidate];
 }
 
-- (void)dealloc {
-    NSLog(@"%s", __FUNCTION__);
-}
+//// 测试循环引用
+//- (void)dealloc {
+//    NSLog(@"%s", __FUNCTION__);
+//}
 
 #pragma mark - 私有方法
 
@@ -178,14 +167,6 @@ static NSString *const reuseIdentifier = @"cycleViewCell";
 
 /**
  *  根据当前的显示的view下标"获取"上一个view下标
- *
- *  如果当前view在itemViews中的下标-1没有越界
- *  那么-1
- *  否则变为itemViews数组的最后一个下标
- *
- *  @param index 当前的view下标
- *
- *  @return 上一个view下标
  */
 - (NSInteger)loadLastIndexWithCurrentIndex:(NSInteger)index
 {
@@ -194,14 +175,6 @@ static NSString *const reuseIdentifier = @"cycleViewCell";
 
 /**
  *  根据当前的显示的view下标"获取"下一个view下标
- *
- *  如果当前view在itemViews中的下标+1没有越界
- *  那么+1
- *  否则变为itemViews数组的第一个下标
- *
- *  @param index 当前的view下标
- *
- *  @return 下一个view下标
  */
 - (NSInteger)loadNextIndexWithCurrentIndex:(NSInteger)index
 {
@@ -210,27 +183,24 @@ static NSString *const reuseIdentifier = @"cycleViewCell";
 
 #pragma mark - collectionView数据源方法
 
-// collectionView有多少组
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     return 1;
 }
 
-// collectionView某一组有多上行
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return self.itemViews.count * 100;
 }
 
-// cell样式
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    // 缓存池服用cell
+    // 缓存池复用cell
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    
+
     [cell.contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [cell.contentView addSubview:self.itemViews[indexPath.row % self.itemViews.count]];
-    
+
     return cell;
 }
 
@@ -260,13 +230,13 @@ static NSString *const reuseIdentifier = @"cycleViewCell";
 {
     NSInteger offset = (NSInteger)scrollView.contentOffset.x / scrollView.bounds.size.width;
     NSInteger count = [self collectionView:self numberOfItemsInSection:0];
-    
+
     // 仅处理最末一页和第一页
     if (offset == count - 1 || offset == 0) {
         offset = self.itemViews.count + (offset == 0 ? 0 : -1);
-        
+
         [self setContentOffset:CGPointMake(offset * scrollView.bounds.size.width, 0) animated:NO];
-        [self reloadItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:offset inSection:0]]];
+        [self reloadItemsAtIndexPaths:@[ [NSIndexPath indexPathForItem:offset inSection:0] ]];
     }
 }
 

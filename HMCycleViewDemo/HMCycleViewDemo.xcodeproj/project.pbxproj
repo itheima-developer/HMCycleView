@@ -13,7 +13,7 @@
 		46BA88B81C61F70B00FC4320 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46BA88B61C61F70B00FC4320 /* Main.storyboard */; };
 		46BA88BA1C61F70B00FC4320 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 46BA88B91C61F70B00FC4320 /* Assets.xcassets */; };
 		46BA88BD1C61F70B00FC4320 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 46BA88BB1C61F70B00FC4320 /* LaunchScreen.storyboard */; };
-		46BA88C71C61F76800FC4320 /* HMCycleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 46BA88C61C61F76800FC4320 /* HMCycleView.m */; };
+		46BA88D11C620EF000FC4320 /* HMCycleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 46BA88D01C620EF000FC4320 /* HMCycleView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,8 +27,8 @@
 		46BA88B91C61F70B00FC4320 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		46BA88BC1C61F70B00FC4320 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		46BA88BE1C61F70B00FC4320 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		46BA88C51C61F76800FC4320 /* HMCycleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMCycleView.h; sourceTree = "<group>"; };
-		46BA88C61C61F76800FC4320 /* HMCycleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMCycleView.m; sourceTree = "<group>"; };
+		46BA88CF1C620EF000FC4320 /* HMCycleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMCycleView.h; sourceTree = "<group>"; };
+		46BA88D01C620EF000FC4320 /* HMCycleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMCycleView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,7 +61,7 @@
 		46BA88AC1C61F70B00FC4320 /* HMCycleViewDemo */ = {
 			isa = PBXGroup;
 			children = (
-				46BA88C41C61F76800FC4320 /* HMCycleView */,
+				46BA88CE1C620EF000FC4320 /* HMCycleView */,
 				46BA88B01C61F70B00FC4320 /* AppDelegate.h */,
 				46BA88B11C61F70B00FC4320 /* AppDelegate.m */,
 				46BA88B31C61F70B00FC4320 /* ViewController.h */,
@@ -83,13 +83,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		46BA88C41C61F76800FC4320 /* HMCycleView */ = {
+		46BA88CE1C620EF000FC4320 /* HMCycleView */ = {
 			isa = PBXGroup;
 			children = (
-				46BA88C51C61F76800FC4320 /* HMCycleView.h */,
-				46BA88C61C61F76800FC4320 /* HMCycleView.m */,
+				46BA88CF1C620EF000FC4320 /* HMCycleView.h */,
+				46BA88D01C620EF000FC4320 /* HMCycleView.m */,
 			);
-			path = HMCycleView;
+			name = HMCycleView;
+			path = ../../HMCycleView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -162,7 +163,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				46BA88C71C61F76800FC4320 /* HMCycleView.m in Sources */,
+				46BA88D11C620EF000FC4320 /* HMCycleView.m in Sources */,
 				46BA88B51C61F70B00FC4320 /* ViewController.m in Sources */,
 				46BA88B21C61F70B00FC4320 /* AppDelegate.m in Sources */,
 				46BA88AF1C61F70B00FC4320 /* main.m in Sources */,
@@ -312,6 +313,7 @@
 				46BA88C31C61F70B00FC4320 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -1,6 +1,6 @@
 //
-//  YHCycleView.h
-//  YHCycleView
+//  HMCycleView.h
+//  HMCycleView
 //
 //  Created by HaoYoson on 16/1/29.
 //  Copyright © 2016年 YosonHao. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface YHCycleView : UICollectionView
+@interface HMCycleView : UICollectionView
 
 /**
  *  需要轮播的view数组
