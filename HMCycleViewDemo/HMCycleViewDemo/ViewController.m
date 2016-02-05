@@ -9,7 +9,7 @@
 #import "HMCycleView.h"
 #import "ViewController.h"
 
-@interface ViewController ()
+@interface ViewController () <HMCycleViewDelegate>
 
 @end
 
@@ -45,8 +45,18 @@
     // 3. 设置轮播下一张的时间(可选，默认两秒)
     cycleView.duration = 3;
 
+    // 设置代理
+    cycleView.cycleViewDelegate = self;
+
     // 4. 调用showInView的方法现实在某个view上
     [cycleView showInView:self.view];
+}
+
+// 点击事件的代理方法
+- (void)cycleView:(HMCycleView *)cycleView didSelectItemView:(UIView *)itemView atIndex:(NSInteger)index
+{
+    NSLog(@"%@", itemView);
+    NSLog(@"%zd", index);
 }
 
 @end

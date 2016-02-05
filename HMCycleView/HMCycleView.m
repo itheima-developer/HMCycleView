@@ -58,8 +58,6 @@
 
 @interface HMCycleView () <UICollectionViewDelegate, UICollectionViewDataSource>
 
-@property (assign, nonatomic) NSInteger currentViewIndex;
-
 @property (assign, nonatomic) CGFloat currentOffsetX;
 
 @property (strong, nonatomic) NSTimer *animationTimer;
@@ -103,9 +101,6 @@ static NSString *const reuseIdentifier = @"cycleViewCell";
 - (void)showInView:(UIView *)view
 {
 
-    // 初始化当前view的index为0
-    self.currentViewIndex = 0;
-
     // 设置collectionView的offset为
     if (self.itemViews.count > 1) {
         self.contentOffset = CGPointMake(self.itemViews.count * self.frame.size.width, 0);
@@ -128,6 +123,7 @@ static NSString *const reuseIdentifier = @"cycleViewCell";
     // 把所有需要现实的子控件的frame设置和当前view一样大小
     for (UIView *itemView in self.itemViews) {
         itemView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+        itemView.userInteractionEnabled = NO;
     }
     [view addSubview:self];
 
@@ -165,22 +161,6 @@ static NSString *const reuseIdentifier = @"cycleViewCell";
     [self setContentOffset:newOffset animated:YES];
 }
 
-/**
- *  根据当前的显示的view下标"获取"上一个view下标
- */
-- (NSInteger)loadLastIndexWithCurrentIndex:(NSInteger)index
-{
-    return index == 0 ? self.itemViews.count - 1 : index - 1;
-}
-
-/**
- *  根据当前的显示的view下标"获取"下一个view下标
- */
-- (NSInteger)loadNextIndexWithCurrentIndex:(NSInteger)index
-{
-    return index == self.itemViews.count - 1 ? 0 : index + 1;
-}
-
 #pragma mark - collectionView数据源方法
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -202,6 +182,18 @@ static NSString *const reuseIdentifier = @"cycleViewCell";
     [cell.contentView addSubview:self.itemViews[indexPath.row % self.itemViews.count]];
 
     return cell;
+}
+
+#pragma mark - collectionView代理方法
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    // 点击itemView的代理方法
+    if ([self.cycleViewDelegate respondsToSelector:@selector(cycleView:didSelectItemView:atIndex:)]) {
+        NSInteger didSelectViewIndex = indexPath.row % self.itemViews.count;
+        UIView *didSelectView = self.itemViews[didSelectViewIndex];
+        [self.cycleViewDelegate cycleView:self didSelectItemView:didSelectView atIndex:didSelectViewIndex];
+    }
 }
 
 #pragma mark - scrollView代理方法
