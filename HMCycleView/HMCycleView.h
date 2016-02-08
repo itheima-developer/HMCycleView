@@ -31,6 +31,6 @@
 
 @property (weak, nonatomic) id<HMCycleViewDelegate> cycleViewDelegate;
 
-- (void)showInView:(UIView *)view;
+-(void)start;
 
 @end

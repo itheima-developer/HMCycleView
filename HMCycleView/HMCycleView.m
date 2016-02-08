@@ -62,6 +62,10 @@
 
 @property (strong, nonatomic) NSTimer *animationTimer;
 
+@property (strong, nonatomic) UICollectionViewFlowLayout *cycleViewLayout;
+
+@property (assign, nonatomic) CGRect viewFrame;
+
 @end
 
 @implementation HMCycleView
@@ -74,42 +78,19 @@ static NSString *const reuseIdentifier = @"cycleViewCell";
 // 初始化的时候创建layout布局
 - (instancetype)initWithFrame:(CGRect)frame
 {
-
-    // 注册单元格
-    [self registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
-
-    // 创建流水布局
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-
-    // cell大小为自身大小
-    layout.itemSize = frame.size;
-    // 横向滚动
-    layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    // cell间距为0
-    layout.minimumLineSpacing = 0;
-
-    return [super initWithFrame:frame collectionViewLayout:layout];
+    self.viewFrame = frame; // 记录一下frame 用来设置itemSize
+    return [super initWithFrame:frame collectionViewLayout:self.cycleViewLayout];
 }
 
 #pragma mark - 公有方法
 
-/**
- *  初始化数据 并且添加在view上
- *
- *  @param view 需要添加到的view
- */
-- (void)showInView:(UIView *)view
+- (void)start
 {
 
-    // 设置collectionView的offset为
-    if (self.itemViews.count > 1) {
-        self.contentOffset = CGPointMake(self.itemViews.count * self.frame.size.width, 0);
+    if (!self.collectionViewLayout) { // 如果是从xib加载的
+        self.collectionViewLayout = self.cycleViewLayout;
     }
 
-    // 记录当前offsetX用来判断翻页
-    self.currentOffsetX = self.contentOffset.x;
-
-    // 设置代理和数据源
     self.delegate = self;
     self.dataSource = self;
 
@@ -120,12 +101,21 @@ static NSString *const reuseIdentifier = @"cycleViewCell";
     self.showsHorizontalScrollIndicator = NO;
     self.showsVerticalScrollIndicator = NO;
 
+    self.clipsToBounds = YES; // 解决frame宽 小于屏幕时 轮播的cell不应出现的问题
+
     // 把所有需要现实的子控件的frame设置和当前view一样大小
     for (UIView *itemView in self.itemViews) {
-        itemView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+        itemView.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
         itemView.userInteractionEnabled = NO;
     }
-    [view addSubview:self];
+
+    // 设置collectionView的offset为
+    if (self.itemViews.count > 1) {
+        self.contentOffset = CGPointMake(self.itemViews.count * self.bounds.size.width, 0);
+    }
+
+    // 记录当前offsetX用来判断翻页
+    self.currentOffsetX = self.contentOffset.x;
 
     // 开启定时器 默认两秒向右滚动 - 单张图片不开启时钟
     if (self.itemViews.count > 1) {
@@ -157,7 +147,7 @@ static NSString *const reuseIdentifier = @"cycleViewCell";
 // 向右滚动
 - (void)scrollToRight
 {
-    CGPoint newOffset = CGPointMake(self.contentOffset.x + CGRectGetWidth(self.frame), self.contentOffset.y);
+    CGPoint newOffset = CGPointMake(self.contentOffset.x + self.bounds.size.width, self.contentOffset.y);
     [self setContentOffset:newOffset animated:YES];
 }
 
@@ -238,6 +228,30 @@ static NSString *const reuseIdentifier = @"cycleViewCell";
 - (NSTimeInterval)duration
 {
     return _duration ?: 2;
+}
+
+- (UICollectionViewFlowLayout *)cycleViewLayout
+{
+    if (!_cycleViewLayout) {
+
+        // 注册单元格
+        [self registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
+
+        // 创建流水布局
+        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+
+        // cell大小为自身大小
+        layout.itemSize = self.viewFrame.size.width && self.viewFrame.size.height ? self.viewFrame.size : self.bounds.size;
+
+        // 横向滚动
+        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        // cell间距为0
+        layout.minimumLineSpacing = 0;
+
+        _cycleViewLayout = layout;
+    }
+
+    return _cycleViewLayout;
 }
 
 @end

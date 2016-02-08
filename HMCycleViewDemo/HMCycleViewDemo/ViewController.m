@@ -10,6 +10,7 @@
 #import "ViewController.h"
 
 @interface ViewController () <HMCycleViewDelegate>
+@property (weak, nonatomic) IBOutlet HMCycleView *asView;
 
 @end
 
@@ -48,8 +49,11 @@
     // 设置代理
     cycleView.cycleViewDelegate = self;
 
-    // 4. 调用showInView的方法现实在某个view上
-    [cycleView showInView:self.view];
+    // 4. 调用star的方法 开始轮播
+    [cycleView start];
+
+    // 添加到控制器view上
+    [self.view addSubview:cycleView];
 }
 
 // 点击事件的代理方法
