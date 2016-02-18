@@ -12,24 +12,30 @@ To enable fantasitic feature in your project with the following simple steps:
 3. Add `#include "HMCycleView.h"` to the top of classes that will use it.
 
 ##Usage
+#####Code example
 ``` objective-c
 
     // 1. create cycleView
     // 1. 创建cycleView
-    HMCycleView *cycleView = [[HMCycleView alloc] initWithFrame:CGRectMake(0, 20, [UIScreen mainScreen].bounds.size.width, 200)];
-    cycleView.backgroundColor = [UIColor whiteColor];
+    HMCycleView *cycleViewCode = [[HMCycleView alloc] initWithFrame:CGRectMake(0, 20, [UIScreen mainScreen].bounds.size.width, 200)];
+    cycleViewCode.backgroundColor = [UIColor whiteColor];
 
     // 2. put a group of views in this array
     // 2. 把所有需要轮播的view放在数组中
-    cycleView.itemViews = @[ view1, view2, view3, view4 ];
+    cycleViewCode.itemViews = itemViews;
 
-    // 3. set scroll time interval(Optional,The default is two seconds)
-    // 3. 设置轮播下一张的时间(可选，默认两秒)
-    cycleView.duration = 3;
+    // *set scroll time interval(Optional,The default is two seconds)
+    // *设置轮播下一张的时间(可选，默认两秒)
+    cycleViewCode.duration = 3;
 
-    // 4. Call the showInView method to display
-    // 4. 调用showInView的方法显示在某个view上
-    [cycleView showInView:self.view];
+    // *set delegate(Optional，Use for click event)
+    // *设置代理(可选，用于监听点击事件)
+    cycleViewCode.cycleViewDelegate = self;
+
+    // 4.add this cycleView 
+    // 4.添加到控制器view上
+    [self.view addSubview:cycleViewCode];
+    
 ```
 
 ##TODO
