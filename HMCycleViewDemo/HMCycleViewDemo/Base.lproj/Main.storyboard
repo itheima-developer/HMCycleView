@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -16,11 +17,45 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oSK-Hw-fbY" customClass="HMCycleView">
+                                <rect key="frame" x="0.0" y="400" width="600" height="200"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="I6L-iN-t57"/>
+                                    <constraint firstAttribute="height" constant="163" id="jEl-H3-hwN"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="jEl-H3-hwN"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="oSK-Hw-fbY" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="PWW-bT-bbi"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="oSK-Hw-fbY" secondAttribute="bottom" id="SUq-rc-IYw"/>
+                            <constraint firstItem="oSK-Hw-fbY" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="ZJA-gF-p9O"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="oSK-Hw-fbY" secondAttribute="trailing" constant="-20" id="dZO-AF-mPN"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="oSK-Hw-fbY" secondAttribute="bottom" id="ghC-PU-xNe"/>
+                            <constraint firstAttribute="trailing" secondItem="oSK-Hw-fbY" secondAttribute="trailing" id="w23-xy-z0x"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="PWW-bT-bbi"/>
+                                <exclude reference="dZO-AF-mPN"/>
+                                <exclude reference="SUq-rc-IYw"/>
+                            </mask>
+                        </variation>
                     </view>
+                    <connections>
+                        <outlet property="cycleViewStoryboard" destination="oSK-Hw-fbY" id="nV3-wJ-3gq"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="305" y="415"/>
         </scene>
     </scenes>
 </document>

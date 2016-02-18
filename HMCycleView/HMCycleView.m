@@ -86,7 +86,6 @@ static NSString *const reuseIdentifier = @"cycleViewCell";
 
 - (void)start
 {
-
     if (!self.collectionViewLayout) { // 如果是从xib加载的
         self.collectionViewLayout = self.cycleViewLayout;
     }
@@ -121,6 +120,16 @@ static NSString *const reuseIdentifier = @"cycleViewCell";
     if (self.itemViews.count > 1) {
         self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:self.duration target:self selector:@selector(scrollToRight) userInfo:nil repeats:YES];
     }
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        [self start];
+    });
 }
 
 - (void)willMoveToWindow:(UIWindow *)newWindow
@@ -180,8 +189,13 @@ static NSString *const reuseIdentifier = @"cycleViewCell";
 {
     // 点击itemView的代理方法
     if ([self.cycleViewDelegate respondsToSelector:@selector(cycleView:didSelectItemView:atIndex:)]) {
+
+        // 点击以后 暂停计时器
+        [self.animationTimer resumeTimerAfterTimeInterval:self.duration];
+
         NSInteger didSelectViewIndex = indexPath.row % self.itemViews.count;
         UIView *didSelectView = self.itemViews[didSelectViewIndex];
+
         [self.cycleViewDelegate cycleView:self didSelectItemView:didSelectView atIndex:didSelectViewIndex];
     }
 }

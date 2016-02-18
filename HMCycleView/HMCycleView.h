@@ -12,7 +12,7 @@
 @protocol HMCycleViewDelegate <NSObject>
 
 @optional
-// 点击时间 - 自己，点击的view，点击的view在数组中的位置。
+// 点击事件 - 自己，点击的view，点击的view在数组中的位置。
 - (void)cycleView:(HMCycleView *)cycleView didSelectItemView:(UIView *)itemView atIndex:(NSInteger)index;
 
 @end
@@ -30,7 +30,5 @@
 @property (assign, nonatomic) NSTimeInterval duration;
 
 @property (weak, nonatomic) id<HMCycleViewDelegate> cycleViewDelegate;
-
--(void)start;
 
 @end
