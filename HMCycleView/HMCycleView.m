@@ -6,6 +6,8 @@
 //  Copyright © 2016年 YosonHao. All rights reserved.
 //
 
+#import "HMCycleCell.h"
+#import "HMCycleFlowLayout.h"
 #import "HMCycleView.h"
 
 @interface NSTimer (Addition)
@@ -30,24 +32,21 @@
 
 @implementation NSTimer (Addition)
 
-- (void)pauseTimer
-{
+- (void)pauseTimer {
     if (![self isValid]) {
         return;
     }
     [self setFireDate:[NSDate distantFuture]];
 }
 
-- (void)resumeTimer
-{
+- (void)resumeTimer {
     if (![self isValid]) {
         return;
     }
     [self setFireDate:[NSDate date]];
 }
 
-- (void)resumeTimerAfterTimeInterval:(NSTimeInterval)interval
-{
+- (void)resumeTimerAfterTimeInterval:(NSTimeInterval)interval {
     if (![self isValid]) {
         return;
     }
@@ -56,216 +55,168 @@
 
 @end
 
+#define kSeed 99
+
+// 标示符
+static NSString *const reuseIdentifier = @"cycle_cell";
+
 @interface HMCycleView () <UICollectionViewDelegate, UICollectionViewDataSource>
 
-@property (assign, nonatomic) CGFloat currentOffsetX;
+@property (nonatomic, weak) UICollectionView *collectionView;
 
-@property (strong, nonatomic) NSTimer *animationTimer;
+@property (nonatomic, weak) UIPageControl *pageControl;
 
-@property (strong, nonatomic) UICollectionViewFlowLayout *cycleViewLayout;
-
-@property (assign, nonatomic) CGRect viewFrame;
+@property (nonatomic, strong) NSTimer *timer;
 
 @end
 
 @implementation HMCycleView
 
-// 重用标识符
-static NSString *const reuseIdentifier = @"cycleViewCell";
-
-#pragma mark - init
-
-// 初始化的时候创建layout布局
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self.viewFrame = frame; // 记录一下frame 用来设置itemSize
-    return [super initWithFrame:frame collectionViewLayout:self.cycleViewLayout];
-}
-
-#pragma mark - 公有方法
-
-- (void)start
-{
-    if (!self.collectionViewLayout) { // 如果是从xib加载的
-        self.collectionViewLayout = self.cycleViewLayout;
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self setupUI];
     }
+    return self;
+}
 
-    self.delegate = self;
-    self.dataSource = self;
+- (void)awakeFromNib {
+    [self setupUI];
+}
 
-    self.pagingEnabled = YES;
+- (void)setupUI {
+    // 子控件
+    HMCycleFlowLayout *layout = [[HMCycleFlowLayout alloc] init];
+    UICollectionView *collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+    // 设置数据源和代理
+    collectionView.dataSource = self;
+    collectionView.delegate = self;
+    // 注册单元格
+    [collectionView registerClass:[HMCycleCell class] forCellWithReuseIdentifier:reuseIdentifier];
 
-    self.bounces = NO;
+    // 设置分页
+    collectionView.pagingEnabled = YES;
+    // 取消弹性效果
+    collectionView.bounces = NO;
+    // 取消指示器
+    collectionView.showsVerticalScrollIndicator = NO;
+    collectionView.showsHorizontalScrollIndicator = NO;
+    // 添加到视图上
+    [self addSubview:collectionView];
 
-    self.showsHorizontalScrollIndicator = NO;
-    self.showsVerticalScrollIndicator = NO;
+    UIPageControl *pageControl = [[UIPageControl alloc] init];
+    pageControl.currentPageIndicatorTintColor = [UIColor yellowColor];
+    pageControl.pageIndicatorTintColor = [UIColor blueColor];
+    pageControl.userInteractionEnabled = NO;
+    [self addSubview:pageControl];
 
-    self.clipsToBounds = YES; // 解决frame宽 小于屏幕时 轮播的cell不应出现的问题
+    // 自动布局
+    collectionView.translatesAutoresizingMaskIntoConstraints = NO;    // 取消 autoresizing
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:collectionView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:collectionView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:collectionView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:collectionView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
 
-    // 把所有需要现实的子控件的frame设置和当前view一样大小
-    for (UIView *itemView in self.itemViews) {
-        itemView.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
-        itemView.userInteractionEnabled = NO;
+    // 自动布局
+    pageControl.translatesAutoresizingMaskIntoConstraints = NO;    // 取消 autoresizing
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:pageControl attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:pageControl attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+
+    self.collectionView = collectionView;
+    self.pageControl = pageControl;
+}
+
+// 当图片数据传过来的时候一定会调用这个方法
+- (void)setImageURLs:(NSArray *)imageURLs {
+    _imageURLs = imageURLs;
+
+    // 刷新数据(重新加载数据源)
+    [self.collectionView reloadData];
+
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:imageURLs.count * kSeed inSection:0];
+    [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
+
+    // 设置pageControl的总页数
+    self.pageControl.numberOfPages = imageURLs.count;
+
+    // 设置一个时钟装置 创建一个计时器对象 把这个计时器添加到运行循环当中
+    [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+}
+
+- (void)updateTimer {
+    // 获取当前的位置
+    // 这个方法 表示 获取当前collectionView多有可见的cell的位置(indexPath)
+    // 因为就我们这个轮播器而言,当前可见的cell只有一个,所以可以根据last 或者 first 或者 [0] 来获取
+    NSIndexPath *indexPath = [self.collectionView indexPathsForVisibleItems].lastObject;
+
+    // 根据当前页 创建下一页的位置
+    NSIndexPath *nextPath = [NSIndexPath indexPathForItem:indexPath.item + 1 inSection:indexPath.section];
+
+    [self.collectionView scrollToItemAtIndexPath:nextPath atScrollPosition:UICollectionViewScrollPositionLeft animated:YES];
+}
+
+// 开始拖拽
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [self.timer pauseTimer];
+}
+
+// 结束拖拽
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    [self.timer resumeTimerAfterTimeInterval:2];
+}
+
+// 滚动动画结束的时候调用
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+    // 手动调用减速完成的方法
+    [self scrollViewDidEndDecelerating:self.collectionView];
+}
+
+// 监听手动减速完成(停止滚动)
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    // x 偏移量
+    CGFloat offsetX = scrollView.contentOffset.x;
+    // 计算页数
+    NSInteger page = offsetX / self.bounds.size.width;
+
+    // 获取某一组有多少行
+    NSInteger itemsCount = [self.collectionView numberOfItemsInSection:0];
+
+    if (page == 0) {    // 第一页
+        self.collectionView.contentOffset = CGPointMake(offsetX + self.imageURLs.count * kSeed * self.bounds.size.width, 0);
+    } else if (page == itemsCount - 1) {    // 最后一页
+        self.collectionView.contentOffset = CGPointMake(offsetX - self.imageURLs.count * kSeed * self.bounds.size.width, 0);
     }
-
-    // 设置collectionView的offset为
-    if (self.itemViews.count > 1) {
-        self.contentOffset = CGPointMake(self.itemViews.count * self.bounds.size.width, 0);
-    }
-
-    // 记录当前offsetX用来判断翻页
-    self.currentOffsetX = self.contentOffset.x;
-
-    // 开启定时器 默认两秒向右滚动 - 单张图片不开启时钟
-    if (self.itemViews.count > 1) {
-        self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:self.duration target:self selector:@selector(scrollToRight) userInfo:nil repeats:YES];
-    }
 }
 
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGFloat offsetX = scrollView.contentOffset.x;
 
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        [self start];
-    });
+    CGFloat page = offsetX / self.bounds.size.width + 0.5;
+    page = (NSInteger)page % self.imageURLs.count;
+    self.pageControl.currentPage = page;
 }
 
-- (void)willMoveToWindow:(UIWindow *)newWindow
-{
-    [super willMoveToWindow:newWindow];
-
-    self.contentInset = UIEdgeInsetsZero;
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return self.imageURLs.count * 2 * kSeed;
 }
 
-- (void)removeFromSuperview
-{
-    [super removeFromSuperview];
-
-    [self.animationTimer invalidate];
-}
-
-//// 测试循环引用
-//- (void)dealloc {
-//    NSLog(@"%s", __FUNCTION__);
-//}
-
-#pragma mark - 私有方法
-
-// 向右滚动
-- (void)scrollToRight
-{
-    CGPoint newOffset = CGPointMake(self.contentOffset.x + self.bounds.size.width, self.contentOffset.y);
-    [self setContentOffset:newOffset animated:YES];
-}
-
-#pragma mark - collectionView数据源方法
-
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
-{
-    return 1;
-}
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
-    return self.itemViews.count * 100;
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    // 缓存池复用cell
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-
-    [cell.contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    [cell.contentView addSubview:self.itemViews[indexPath.row % self.itemViews.count]];
-
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    HMCycleCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    cell.imageURL = self.imageURLs[indexPath.item % self.imageURLs.count];
     return cell;
 }
 
-#pragma mark - collectionView代理方法
+- (void)removeFromSuperview {
+    [super removeFromSuperview];
+    [self.timer invalidate];
+}
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    // 点击itemView的代理方法
-    if ([self.cycleViewDelegate respondsToSelector:@selector(cycleView:didSelectItemView:atIndex:)]) {
-
-        // 点击以后 暂停计时器
-        [self.animationTimer resumeTimerAfterTimeInterval:self.duration];
-
-        NSInteger didSelectViewIndex = indexPath.row % self.itemViews.count;
-        UIView *didSelectView = self.itemViews[didSelectViewIndex];
-
-        [self.cycleViewDelegate cycleView:self didSelectItemView:didSelectView atIndex:didSelectViewIndex];
+- (NSTimer *)timer {
+    if (!_timer) {
+        NSTimer *timer = [NSTimer timerWithTimeInterval:2 target:self selector:@selector(updateTimer) userInfo:nil repeats:YES];
+        _timer = timer;
     }
-}
-
-#pragma mark - scrollView代理方法
-
-// 开始拖拽CycleView的时候 暂定定时器
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    [self.animationTimer pauseTimer];
-}
-
-// 结束拖拽CycleView的时候 默认两秒以后开启定时器
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    [self.animationTimer resumeTimerAfterTimeInterval:self.duration];
-}
-
-// offset动画改变完成后调用
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
-{
-    // 滚动完成后 更改当前view的下标 并刷新
-    [self scrollViewDidEndDecelerating:self];
-}
-
-// scrollView减速完成-切换一次图片
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    NSInteger offset = (NSInteger)scrollView.contentOffset.x / scrollView.bounds.size.width;
-    NSInteger count = [self collectionView:self numberOfItemsInSection:0];
-
-    // 仅处理最末一页和第一页
-    if (offset == count - 1 || offset == 0) {
-        offset = self.itemViews.count + (offset == 0 ? 0 : -1);
-
-        [self setContentOffset:CGPointMake(offset * scrollView.bounds.size.width, 0) animated:NO];
-        [self reloadItemsAtIndexPaths:@[ [NSIndexPath indexPathForItem:offset inSection:0] ]];
-    }
-}
-
-#pragma mark - get方法
-
-// 如果没有设置默认时间 那么默认时间为2秒钟一次滚动
-- (NSTimeInterval)duration
-{
-    return _duration ?: 2;
-}
-
-- (UICollectionViewFlowLayout *)cycleViewLayout
-{
-    if (!_cycleViewLayout) {
-
-        // 注册单元格
-        [self registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
-
-        // 创建流水布局
-        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-
-        // cell大小为自身大小
-        layout.itemSize = self.viewFrame.size.width && self.viewFrame.size.height ? self.viewFrame.size : self.bounds.size;
-
-        // 横向滚动
-        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-        // cell间距为0
-        layout.minimumLineSpacing = 0;
-
-        _cycleViewLayout = layout;
-    }
-
-    return _cycleViewLayout;
+    return _timer;
 }
 
 @end

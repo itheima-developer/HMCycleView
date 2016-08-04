@@ -17,7 +17,7 @@
 
 @end
 
-@interface HMCycleView : UICollectionView
+@interface HMCycleView : UIView
 
 /**
  *  需要轮播的view数组
@@ -30,5 +30,7 @@
 @property (assign, nonatomic) NSTimeInterval duration;
 
 @property (weak, nonatomic) id<HMCycleViewDelegate> cycleViewDelegate;
+
+@property (nonatomic, strong) NSArray *imageURLs;
 
 @end
