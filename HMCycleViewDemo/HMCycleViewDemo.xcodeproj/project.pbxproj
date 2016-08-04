@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		468C91721D5323FC000404B3 /* HMCycleImageHolder.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 468C91711D5323FC000404B3 /* HMCycleImageHolder.jpg */; };
 		46A80DBC1D51F2EE0072D35A /* HMCycleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46A80DBB1D51F2EE0072D35A /* HMCycleCell.m */; };
 		46A80DBF1D51F7890072D35A /* HMCycleFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 46A80DBE1D51F7890072D35A /* HMCycleFlowLayout.m */; };
 		46A80DCC1D5200F10072D35A /* Home_Scroll_01.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 46A80DC71D5200F10072D35A /* Home_Scroll_01.jpg */; };
@@ -25,7 +24,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		468C91711D5323FC000404B3 /* HMCycleImageHolder.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = HMCycleImageHolder.jpg; sourceTree = "<group>"; };
 		46A80DBA1D51F2EE0072D35A /* HMCycleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMCycleCell.h; sourceTree = "<group>"; };
 		46A80DBB1D51F2EE0072D35A /* HMCycleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMCycleCell.m; sourceTree = "<group>"; };
 		46A80DBD1D51F7890072D35A /* HMCycleFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMCycleFlowLayout.h; sourceTree = "<group>"; };
@@ -117,7 +115,6 @@
 		46BA88CE1C620EF000FC4320 /* HMCycleView */ = {
 			isa = PBXGroup;
 			children = (
-				468C91711D5323FC000404B3 /* HMCycleImageHolder.jpg */,
 				46A80DBD1D51F7890072D35A /* HMCycleFlowLayout.h */,
 				46A80DBE1D51F7890072D35A /* HMCycleFlowLayout.m */,
 				46A80DBA1D51F2EE0072D35A /* HMCycleCell.h */,
@@ -192,7 +189,6 @@
 				46A80DCD1D5200F10072D35A /* Home_Scroll_02.jpg in Resources */,
 				46A80DD01D5200F10072D35A /* Home_Scroll_05.jpg in Resources */,
 				46BA88BA1C61F70B00FC4320 /* Assets.xcassets in Resources */,
-				468C91721D5323FC000404B3 /* HMCycleImageHolder.jpg in Resources */,
 				46A80DCF1D5200F10072D35A /* Home_Scroll_04.jpg in Resources */,
 				46BA88B81C61F70B00FC4320 /* Main.storyboard in Resources */,
 			);
