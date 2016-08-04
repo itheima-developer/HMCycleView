@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		46A80DBC1D51F2EE0072D35A /* HMCycleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 46A80DBB1D51F2EE0072D35A /* HMCycleCell.m */; };
-		46A80DBF1D51F7890072D35A /* HMCycleFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 46A80DBE1D51F7890072D35A /* HMCycleFlowLayout.m */; };
 		46A80DCC1D5200F10072D35A /* Home_Scroll_01.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 46A80DC71D5200F10072D35A /* Home_Scroll_01.jpg */; };
 		46A80DCD1D5200F10072D35A /* Home_Scroll_02.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 46A80DC81D5200F10072D35A /* Home_Scroll_02.jpg */; };
 		46A80DCE1D5200F10072D35A /* Home_Scroll_03.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 46A80DC91D5200F10072D35A /* Home_Scroll_03.jpg */; };
@@ -24,10 +22,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		46A80DBA1D51F2EE0072D35A /* HMCycleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMCycleCell.h; sourceTree = "<group>"; };
-		46A80DBB1D51F2EE0072D35A /* HMCycleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMCycleCell.m; sourceTree = "<group>"; };
-		46A80DBD1D51F7890072D35A /* HMCycleFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMCycleFlowLayout.h; sourceTree = "<group>"; };
-		46A80DBE1D51F7890072D35A /* HMCycleFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMCycleFlowLayout.m; sourceTree = "<group>"; };
 		46A80DC71D5200F10072D35A /* Home_Scroll_01.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Home_Scroll_01.jpg; sourceTree = "<group>"; };
 		46A80DC81D5200F10072D35A /* Home_Scroll_02.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Home_Scroll_02.jpg; sourceTree = "<group>"; };
 		46A80DC91D5200F10072D35A /* Home_Scroll_03.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Home_Scroll_03.jpg; sourceTree = "<group>"; };
@@ -115,10 +109,6 @@
 		46BA88CE1C620EF000FC4320 /* HMCycleView */ = {
 			isa = PBXGroup;
 			children = (
-				46A80DBD1D51F7890072D35A /* HMCycleFlowLayout.h */,
-				46A80DBE1D51F7890072D35A /* HMCycleFlowLayout.m */,
-				46A80DBA1D51F2EE0072D35A /* HMCycleCell.h */,
-				46A80DBB1D51F2EE0072D35A /* HMCycleCell.m */,
 				46BA88CF1C620EF000FC4320 /* HMCycleView.h */,
 				46BA88D01C620EF000FC4320 /* HMCycleView.m */,
 			);
@@ -202,9 +192,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				46BA88D11C620EF000FC4320 /* HMCycleView.m in Sources */,
-				46A80DBF1D51F7890072D35A /* HMCycleFlowLayout.m in Sources */,
 				46BA88B51C61F70B00FC4320 /* ViewController.m in Sources */,
-				46A80DBC1D51F2EE0072D35A /* HMCycleCell.m in Sources */,
 				46BA88B21C61F70B00FC4320 /* AppDelegate.m in Sources */,
 				46BA88AF1C61F70B00FC4320 /* main.m in Sources */,
 			);

@@ -10,6 +10,7 @@
 
 @interface HMCycleView : UIView
 
-@property (nonatomic, strong) NSArray *imageURLs;
+// 图片URL地址的数组
+@property (nonatomic, strong) NSArray<NSURL *> *imageURLs;
 
 @end
