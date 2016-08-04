@@ -15,35 +15,32 @@ To enable fantasitic feature in your project with the following simple steps:
 #####Code example
 ``` objective-c
 
-    // 1. create cycleView
-    // 1. 创建cycleView
-    HMCycleView *cycleViewCode = [[HMCycleView alloc] initWithFrame:CGRectMake(0, 20, [UIScreen mainScreen].bounds.size.width, 200)];
-    cycleViewCode.backgroundColor = [UIColor whiteColor];
+    // 1. create cycleView(set 'frame' or 'autoLayout').
+    HMCycleView *cycleView = [[HMCycleView alloc] initWithFrame:CGRectMake(0, 0, 300, 100)];
 
-    // 2. put a group of views in this array
-    // 2. 把所有需要轮播的view放在数组中
-    cycleViewCode.itemViews = itemViews;
+    NSURL *url1 = [[NSBundle mainBundle] URLForResource:@"Home_Scroll_01.jpg" withExtension:nil];
+    NSURL *url2 = [[NSBundle mainBundle] URLForResource:@"Home_Scroll_02.jpg" withExtension:nil];
+    NSURL *url3 = [[NSBundle mainBundle] URLForResource:@"Home_Scroll_03.jpg" withExtension:nil];
+    NSURL *url4 = [[NSBundle mainBundle] URLForResource:@"Home_Scroll_04.jpg" withExtension:nil];
+    NSURL *url5 = [[NSBundle mainBundle] URLForResource:@"Home_Scroll_05.jpg" withExtension:nil];
+    // 2. set array with image's URL.
+    cycleView.imageURLs = @[ url1, url2, url3, url4, url5 ];
 
-    // *set scroll time interval(Optional,The default is two seconds)
-    // *设置轮播下一张的时间(可选，默认两秒)
-    cycleViewCode.duration = 3;
-
-    // *set delegate(Optional，Use for click event)
-    // *设置代理(可选，用于监听点击事件)
-    cycleViewCode.cycleViewDelegate = self;
-
-    // 4.add this cycleView 
-    // 4.添加到控制器view上
-    [self.view addSubview:cycleViewCode];
+    // 3. add this cycleView.
+    [self.view addSubview:cycleView];
     
 ```
 
 ##TODO
-~~Each item click.~~
+Each item click.
 
 Each item description.
 
-Page control.
+~~Page control.~~
+
+Page control custom color.
+
+Scroll duration.
 
 ##Author
 **Yoson Hao**

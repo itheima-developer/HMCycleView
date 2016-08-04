@@ -9,7 +9,7 @@
 #import "HMCycleView.h"
 #import "ViewController.h"
 
-@interface ViewController () <HMCycleViewDelegate>
+@interface ViewController ()
 
 @end
 
@@ -21,8 +21,18 @@
 
     self.view.backgroundColor = [UIColor whiteColor];
 
-    HMCycleView *cycleView = [[HMCycleView alloc] initWithFrame:CGRectZero];
-    cycleView.imageURLs = [self loadImageURLs];
+    // 1. create cycleView(set 'frame' or 'autoLayout').
+    HMCycleView *cycleView = [[HMCycleView alloc] initWithFrame:CGRectMake(0, 0, 300, 100)];
+
+    NSURL *url1 = [[NSBundle mainBundle] URLForResource:@"Home_Scroll_01.jpg" withExtension:nil];
+    NSURL *url2 = [[NSBundle mainBundle] URLForResource:@"Home_Scroll_02.jpg" withExtension:nil];
+    NSURL *url3 = [[NSBundle mainBundle] URLForResource:@"Home_Scroll_03.jpg" withExtension:nil];
+    NSURL *url4 = [[NSBundle mainBundle] URLForResource:@"Home_Scroll_04.jpg" withExtension:nil];
+    NSURL *url5 = [[NSBundle mainBundle] URLForResource:@"Home_Scroll_05.jpg" withExtension:nil];
+    // 2. set array with image's URL.
+    cycleView.imageURLs = @[ url1, url2, url3, url4, url5 ];
+
+    // 3. add this cycleView.
     [self.view addSubview:cycleView];
 
     cycleView.translatesAutoresizingMaskIntoConstraints = NO;    // 取消 autoresizing
