@@ -287,6 +287,12 @@ static NSString *const reuseIdentifier = @"cycle_cell";
     return cell;
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self.delegate respondsToSelector:@selector(cycleView:didSelectItemAtIndex:)]) {
+        [self.delegate cycleView:self didSelectItemAtIndex:indexPath.item % self.imageURLs.count];
+    }
+}
+
 - (void)removeFromSuperview {
     [super removeFromSuperview];
     [self.timer invalidate];

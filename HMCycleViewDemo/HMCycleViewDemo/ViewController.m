@@ -9,7 +9,7 @@
 #import "HMCycleView.h"
 #import "ViewController.h"
 
-@interface ViewController ()
+@interface ViewController () <HMCycleViewDelegate>
 
 @end
 
@@ -32,6 +32,8 @@
     // 2. set array with image's URL.
     cycleView.imageURLs = @[ url1, url2, url3, url4, url5 ];
 
+    cycleView.delegate = self;
+
     // 3. add this cycleView.
     [self.view addSubview:cycleView];
 
@@ -40,6 +42,10 @@
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:cycleView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:cycleView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:cycleView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:150]];
+}
+
+- (void)cycleView:(HMCycleView *)cycleView didSelectItemAtIndex:(NSInteger)index {
+    NSLog(@"%zd", index);
 }
 
 // 轮播器广告数据
