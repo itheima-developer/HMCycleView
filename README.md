@@ -32,7 +32,7 @@ To enable fantasitic feature in your project with the following simple steps:
 ```
 
 ##TODO
-Each item click.
+~~Each item click.~~
 
 Each item description.
 
