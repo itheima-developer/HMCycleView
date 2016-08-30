@@ -36,6 +36,9 @@
 - (void)setImageURL:(NSURL *)imageURL {
     _imageURL = imageURL;
 
+    // TODO: cache
+    self.imageView.image = nil;
+
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         NSData *data = [NSData dataWithContentsOfURL:imageURL];
         UIImage *image = [UIImage imageWithData:data];
