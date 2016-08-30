@@ -214,11 +214,17 @@ static NSString *const reuseIdentifier = @"cycle_cell";
     // 刷新数据(重新加载数据源)
     [self.collectionView reloadData];
 
-    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:imageURLs.count * kSeed inSection:0];
-    [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
-
     // 设置pageControl的总页数
     self.pageControl.numberOfPages = imageURLs.count;
+}
+
+// 已经显示
+- (void)didMoveToWindow {
+    [super didMoveToWindow];
+
+    [self layoutIfNeeded];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:self.imageURLs.count * kSeed inSection:0];
+    [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionLeft animated:NO];
 
     // 设置一个时钟装置 创建一个计时器对象 把这个计时器添加到运行循环当中
     [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
