@@ -36,12 +36,14 @@
 - (void)setImageURL:(NSURL *)imageURL {
     _imageURL = imageURL;
 
-    // url ->  data
-    NSData *data = [NSData dataWithContentsOfURL:imageURL];
-    // data -> image
-    UIImage *image = [UIImage imageWithData:data];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSData *data = [NSData dataWithContentsOfURL:imageURL];
+        UIImage *image = [UIImage imageWithData:data];
 
-    self.imageView.image = image;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.imageView.image = image;
+        });
+    });
 }
 
 - (void)setupUI {
