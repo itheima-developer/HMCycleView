@@ -205,11 +205,41 @@ static NSString *const reuseIdentifier = @"cycle_cell";
 
     // 自动布局
     pageControl.translatesAutoresizingMaskIntoConstraints = NO;    // 取消 autoresizing
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:pageControl attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:pageControl attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1 constant:-16]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:pageControl attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
 
     self.collectionView = collectionView;
     self.pageControl = pageControl;
+}
+
+- (void)setPageControlPosition:(HMCycleViewPageControlPosition)pageControlPosition {
+    _pageControlPosition = pageControlPosition;
+
+    // 删除之前默认的右下角约束
+    for (int i = 0; i < self.constraints.count; i++) {
+        NSLayoutConstraint *constraint = self.constraints[i];
+        if (constraint.firstItem == self.pageControl) {
+            [self removeConstraint:constraint];
+        }
+    }
+
+    switch (self.pageControlPosition) {
+        case HMCycleViewPageControlPositionBottomCenter:
+            [self addConstraint:[NSLayoutConstraint constraintWithItem:self.pageControl attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
+            [self addConstraint:[NSLayoutConstraint constraintWithItem:self.pageControl attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+            break;
+        case HMCycleViewPageControlPositionBottomLeft:
+            [self addConstraint:[NSLayoutConstraint constraintWithItem:self.pageControl attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1 constant:16]];
+            [self addConstraint:[NSLayoutConstraint constraintWithItem:self.pageControl attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+            break;
+        case HMCycleViewPageControlPositionBottomRight:
+            [self addConstraint:[NSLayoutConstraint constraintWithItem:self.pageControl attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1 constant:-16]];
+            [self addConstraint:[NSLayoutConstraint constraintWithItem:self.pageControl attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+            break;
+
+        default:
+            break;
+    }
 }
 
 // 当图片数据传过来的时候一定会调用这个方法

@@ -9,6 +9,12 @@
 #import <UIKit/UIKit.h>
 @class HMCycleView;
 
+typedef enum : NSUInteger {
+    HMCycleViewPageControlPositionBottomRight,
+    HMCycleViewPageControlPositionBottomLeft,
+    HMCycleViewPageControlPositionBottomCenter,
+} HMCycleViewPageControlPosition;
+
 @protocol HMCycleViewDelegate <NSObject>
 
 @optional
@@ -23,5 +29,7 @@
 @property (nonatomic, strong) NSArray<NSURL *> *imageURLs;
 
 @property (weak, nonatomic) id<HMCycleViewDelegate> delegate;
+
+@property (assign, nonatomic) HMCycleViewPageControlPosition pageControlPosition;
 
 @end

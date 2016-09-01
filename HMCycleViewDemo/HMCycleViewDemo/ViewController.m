@@ -31,9 +31,11 @@
     NSURL *url5 = [[NSBundle mainBundle] URLForResource:@"Home_Scroll_05.jpg" withExtension:nil];
 
     // 2. set array with image's URL.
-    cycleView.imageURLs = @[ url1, url2, url3, [NSURL URLWithString:@"http://e.hiphotos.baidu.com/image/pic/item/faedab64034f78f0b31a05a671310a55b3191c55.jpg"], url4, [NSURL URLWithString:@"http://imgstore.cdn.sogou.com/app/a/100540002/714860.jpg"], url5 ];
+    cycleView.imageURLs = @[ url1, url2, url3, url4, url5 ];
 
     cycleView.delegate = self;
+
+    cycleView.pageControlPosition = HMCycleViewPageControlPositionBottomRight;
 
     // 3. add this cycleView.
     [self.view addSubview:cycleView];
