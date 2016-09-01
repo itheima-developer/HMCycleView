@@ -35,7 +35,7 @@
 
     cycleView.delegate = self;
 
-    cycleView.pageControlPosition = HMCycleViewPageControlPositionBottomRight;
+    cycleView.pageControlPosition = HMCycleViewPageControlPositionBottomLeft;
 
     cycleView.showPageControl = YES;
 

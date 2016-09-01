@@ -296,6 +296,10 @@ static NSString *const reuseIdentifier = @"cycle_cell";
 
     // 设置一个时钟装置 创建一个计时器对象 把这个计时器添加到运行循环当中
     [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+
+    if (self.pageControlPosition == HMCycleViewPageControlPositionBottomLeft) {
+        self.titleLabel.textAlignment = NSTextAlignmentRight;
+    }
 }
 
 - (void)updateTimer {
