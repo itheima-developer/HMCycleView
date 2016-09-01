@@ -30,6 +30,8 @@ typedef enum : NSUInteger {
 
 @property (weak, nonatomic) id<HMCycleViewDelegate> delegate;
 
+@property (assign, nonatomic) BOOL showPageControl;
+
 @property (assign, nonatomic) HMCycleViewPageControlPosition pageControlPosition;
 
 @end

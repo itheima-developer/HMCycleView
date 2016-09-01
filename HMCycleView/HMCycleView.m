@@ -212,6 +212,12 @@ static NSString *const reuseIdentifier = @"cycle_cell";
     self.pageControl = pageControl;
 }
 
+- (void)setShowPageControl:(BOOL)showPageControl {
+    _showPageControl = showPageControl;
+
+    self.pageControl.hidden = !showPageControl;
+}
+
 - (void)setPageControlPosition:(HMCycleViewPageControlPosition)pageControlPosition {
     _pageControlPosition = pageControlPosition;
 

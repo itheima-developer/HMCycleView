@@ -37,6 +37,8 @@
 
     cycleView.pageControlPosition = HMCycleViewPageControlPositionBottomRight;
 
+    cycleView.showPageControl = YES;
+
     // 3. add this cycleView.
     [self.view addSubview:cycleView];
 
