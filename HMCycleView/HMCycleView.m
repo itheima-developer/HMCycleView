@@ -154,6 +154,8 @@ static NSString *const reuseIdentifier = @"cycle_cell";
 
 @property (nonatomic, strong) NSTimer *timer;
 
+@property (weak, nonatomic) UILabel *titleLabel;
+
 @end
 
 @implementation HMCycleView
@@ -196,6 +198,15 @@ static NSString *const reuseIdentifier = @"cycle_cell";
     pageControl.userInteractionEnabled = NO;
     [self addSubview:pageControl];
 
+    // cover和title
+    UIView *coverView = [[UIView alloc] init];
+    coverView.backgroundColor = [UIColor colorWithWhite:0 alpha:.5];
+    [self addSubview:coverView];
+    UILabel *titleLabel = [[UILabel alloc] init];
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.font = [UIFont systemFontOfSize:15];
+    [self addSubview:titleLabel];
+
     // 自动布局
     collectionView.translatesAutoresizingMaskIntoConstraints = NO;    // 取消 autoresizing
     [self addConstraint:[NSLayoutConstraint constraintWithItem:collectionView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
@@ -208,8 +219,24 @@ static NSString *const reuseIdentifier = @"cycle_cell";
     [self addConstraint:[NSLayoutConstraint constraintWithItem:pageControl attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1 constant:-16]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:pageControl attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
 
+    // coverView自动布局
+    coverView.translatesAutoresizingMaskIntoConstraints = NO;    // 取消 autoresizing
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:coverView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:pageControl attribute:NSLayoutAttributeHeight multiplier:1 constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:coverView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:coverView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1 constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:coverView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
+
+    titleLabel.translatesAutoresizingMaskIntoConstraints = NO;    // 取消 autoresizing
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:titleLabel attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:pageControl attribute:NSLayoutAttributeHeight multiplier:1 constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:titleLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:titleLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1 constant:16]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:titleLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1 constant:-16]];
+
     self.collectionView = collectionView;
     self.pageControl = pageControl;
+    self.titleLabel = titleLabel;
+
+    [self bringSubviewToFront:pageControl];
 }
 
 - (void)setShowPageControl:(BOOL)showPageControl {
@@ -322,6 +349,22 @@ static NSString *const reuseIdentifier = @"cycle_cell";
     CGFloat page = offsetX / self.bounds.size.width + 0.5;
     page = (NSInteger)page % self.imageURLs.count;
     self.pageControl.currentPage = page;
+
+    if (self.titles.count) {
+        if (self.titles.count < self.imageURLs.count) {
+            NSMutableArray *tempStrings = [NSMutableArray array];
+
+            for (int i = 0; i < self.imageURLs.count; i++) {
+                if (i > self.titles.count - 1) {
+                    [tempStrings addObject:@""];
+                    continue;
+                }
+                [tempStrings addObject:self.titles[i]];
+            }
+            self.titles = tempStrings.copy;
+        }
+        self.titleLabel.text = self.titles[(NSInteger)page];
+    }
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {

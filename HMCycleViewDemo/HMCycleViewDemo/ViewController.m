@@ -39,6 +39,8 @@
 
     cycleView.showPageControl = YES;
 
+    cycleView.titles = @[ @"1", @"", @"3", @"4" ];
+
     // 3. add this cycleView.
     [self.view addSubview:cycleView];
 

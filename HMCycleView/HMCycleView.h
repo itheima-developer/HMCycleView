@@ -34,4 +34,6 @@ typedef enum : NSUInteger {
 
 @property (assign, nonatomic) HMCycleViewPageControlPosition pageControlPosition;
 
+@property (nonatomic, strong) NSArray<NSString *> *titles;
+
 @end
